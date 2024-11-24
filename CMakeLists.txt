@@ -13,9 +13,14 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-	main.cpp
-        mainwindow.cpp
-        mainwindow.h
+	./views/src/main.cpp
+        ./views/src/createtask.cpp
+        ./views/headers/createtask.h
+        ui_createtask.h
+        createtask.ui
+        ./views/src/mainwindow.cpp
+        ./views/headers/mainwindow.h
+	ui_mainwindow.h
         mainwindow.ui
 	./simplex_logic/headers/task.h
 	./simplex_logic/headers/table.h
