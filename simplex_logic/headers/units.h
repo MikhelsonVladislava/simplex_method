@@ -39,9 +39,4 @@ public:
 
 };
 
-std::ostream& operator << (std::ostream &os, const Fraction &frac)
-{
-    return os << frac.get_numerator() << "/" << frac.get_denominator();
-}
-
 #endif

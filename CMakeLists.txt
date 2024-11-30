@@ -22,6 +22,10 @@ set(PROJECT_SOURCES
         ./views/headers/mainwindow.h
 	ui_mainwindow.h
         mainwindow.ui
+        ./views/src/taskview.cpp
+        ./views/headers/taskview.h
+        ui_taskview.h
+        taskview.ui
 	./simplex_logic/headers/task.h
 	./simplex_logic/headers/table.h
 	./simplex_logic/headers/units.h

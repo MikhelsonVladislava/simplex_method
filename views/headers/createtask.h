@@ -1,12 +1,16 @@
 #ifndef CREATETASK_H
 #define CREATETASK_H
 
+#include <QScrollArea>
 #include <QWidget>
+#include <QPointer>
+#include "taskview.h"
+#include <QLineEdit>
+
 
 namespace Ui {
 class CreateTask;
 }
-
 class CreateTask : public QWidget
 {
     Q_OBJECT
@@ -18,6 +22,7 @@ public:
     {
         this->var_count = var_count;
         this->eqs_count = eqs_count;
+        create_interface();
     }
 
     void create_interface();
@@ -26,6 +31,7 @@ public:
 
 private:
     Ui::CreateTask *ui;
+    QPointer<TaskView> task_view = nullptr;
 
     int eqs_count = 0;
     int var_count = 0;

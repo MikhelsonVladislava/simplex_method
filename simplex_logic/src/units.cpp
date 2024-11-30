@@ -1,6 +1,11 @@
 #include "../headers/units.h"
 #include <cmath>
 
+std::ostream& operator << (std::ostream &os, const Fraction &frac)
+{
+    return os << frac.get_numerator() << "/" << frac.get_denominator();
+}
+
 void Fraction::reduce()
 {
     int n_sqrt = std::sqrt(numerator);
