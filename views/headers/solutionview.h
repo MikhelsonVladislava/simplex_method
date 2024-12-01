@@ -46,6 +46,7 @@ private:
     Ui::SolutionView *ui;
     Table<Fraction> table;
     void create_interface();
+    int space_size = 15;
 };
 
 #endif // SOLUTIONVIEW_H

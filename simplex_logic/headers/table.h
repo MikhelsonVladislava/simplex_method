@@ -241,6 +241,8 @@ public:
             iteration++;
             std::cout << std:: endl << "\n";
         }
+
+        states_history.push_back(std::make_shared<TableState<maintype>>(TableState(current_state)));
     }
 
     maintype get_tagret_value()
@@ -283,6 +285,8 @@ public:
         }
         return resul;
     }
+
+
 };
 
 #endif

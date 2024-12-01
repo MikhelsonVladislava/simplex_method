@@ -20,6 +20,7 @@ CreateTask::CreateTask(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CreateTask)
 {
+    this->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(this);
 }
 
@@ -57,6 +58,7 @@ void CreateTask::push_create_task_but()
     Task<Fraction> t = collect_task();
     std::shared_ptr<TableState<Fraction>> start_state = std::make_shared<TableState<Fraction>>(TableState(t));
     sub_window = new SolutionView(start_state);
+
     sub_window->show();
 }
 
