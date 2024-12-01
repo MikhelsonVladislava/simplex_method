@@ -33,10 +33,13 @@ public:
     int operator<=(const Fraction& second);
 
     Fraction(int number);
+    std::string to_string();
 
     int get_denominator() const;
     int get_numerator() const;
 
 };
+
+std::ostream& operator << (std::ostream &os, const Fraction &frac);
 
 #endif

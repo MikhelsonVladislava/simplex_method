@@ -1,4 +1,5 @@
 #include "../headers/units.h"
+#include <string>
 #include <cmath>
 
 std::ostream& operator << (std::ostream &os, const Fraction &frac)
@@ -93,6 +94,8 @@ int Fraction::operator>=(const Fraction& second) {return ( this->numerator * sec
 int Fraction::operator<=(const Fraction& second) {return ( this->numerator * second.denominator <= second.numerator * this->denominator);}
 
 Fraction::Fraction(int number) : Fraction(number, 1) {};
+
+std::string Fraction::to_string() {return std::to_string(get_numerator()) + "/" + std::to_string(get_denominator());};
 
 int Fraction::get_denominator() const {return denominator;};
 int Fraction::get_numerator() const {return numerator;};

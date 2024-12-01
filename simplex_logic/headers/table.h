@@ -3,6 +3,7 @@
 #include "task.h"
 #include <iomanip>
 #include <iostream>
+#include <memory>
 // ограничение на номера переменных
 template<typename maintype>
 class TableState
@@ -94,6 +95,7 @@ private:
 
 
 public:
+    TableState() {}
     TableState(const Task<maintype>& task)
     {
         System<maintype> system = task.get_system();
@@ -115,18 +117,17 @@ public:
             target_f[i] = calculate_target_f(i);
     }
 
-    TableState(const TableState<maintype>& last_state)
+    TableState(const std::shared_ptr<TableState<maintype>> last_state)
     {
-        basis = last_state.basis;
-        target_coeffs_c = last_state.target_coeffs_c;
-        right_part_b = last_state.right_part_b;
-        main_table_coeffs = last_state.main_table_coeffs;
-        target_f = last_state.target_f;
-        system_var_count = last_state.system_var_count;
-        system_elements_count = last_state.system_elements_count;
+        basis = last_state->basis;
+        target_coeffs_c = last_state->target_coeffs_c;
+        right_part_b = last_state->right_part_b;
+        main_table_coeffs = last_state->main_table_coeffs;
+        target_f = last_state->target_f;
+        system_var_count = last_state->system_var_count;
+        system_elements_count = last_state->system_elements_count;
     }
-    
-    std::map<int, maintype> get_target_coeffs_c() {return target_coeffs_c;}
+
 
     bool is_optimized()
     {
@@ -184,7 +185,13 @@ public:
     int get_var_number() {return system_var_count;}
     std::map<int, int> get_basis() {return basis;}
     std::map<int, maintype> right_part() {return right_part_b;}
-
+    maintype get_right_part_eq(int i) {return right_part_b[i];}
+    std::map<int, maintype> get_target_coeffs_c() {return target_coeffs_c;}
+    maintype get_target_coeff_c(int i) {return target_coeffs_c[i];}
+    std::vector<std::vector<maintype>> get_main_table_coeffs() {return main_table_coeffs;}
+    maintype get_main_table_coeff_var(int row, int column) {return main_table_coeffs[row][column];}
+    std::map<int, maintype> get_target_f() {return target_f;}
+    maintype get_target_f_eq(int i) {return target_f[i];}
     void view()
     {
         std::cout << std::setw(4) << " " << std::setw(4) << " " << std::setw(4) << " ";
@@ -212,10 +219,12 @@ class Table
 {
 private:
     int iteration = 0;
-    TableState<maintype>* current_state;
+    std::shared_ptr<TableState<maintype>> current_state;
+    std::vector<std::shared_ptr<TableState<maintype>>> states_history = {};
 
 public:
-    Table(TableState<maintype>* start_state)
+    Table() {}
+    Table(std::shared_ptr<TableState<maintype>> start_state)
     {
         current_state = start_state;
     }
@@ -226,6 +235,7 @@ public:
         std::cout << std:: endl << "\n";
         while(!current_state->is_optimized())
         {
+            states_history.push_back(std::make_shared<TableState<maintype>>(TableState(current_state)));
             current_state->optimize();
             current_state->view();
             iteration++;
@@ -246,6 +256,8 @@ public:
 
         return result;
     }
+
+    std::vector<std::shared_ptr<TableState<maintype>>> get_history() {return states_history;}
 
     std::map<int, int> get_basis_number_eq_number()
     {

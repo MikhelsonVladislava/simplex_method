@@ -3,6 +3,7 @@
 
 #include "../../simplex_logic/headers/task.h"
 #include "../../simplex_logic/headers/units.h"
+#include<string>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QScrollArea>
@@ -18,7 +19,8 @@ class CoeffBox
 private:
     int var_number = 0;
     QString name;
-    QPointer<QWidget> splitter;
+    QPointer<QLineEdit> coeff_window = nullptr;
+    QPointer<QWidget> splitter = nullptr;
 
     void create_interface();
 public:
@@ -36,7 +38,7 @@ public:
     }
     int get_coeff()
     {
-        return splitter->findChild<QLineEdit*>(name)->text().toInt();
+        return coeff_window->text().toInt();
     }
 
 };
@@ -48,6 +50,7 @@ private:
     QPointer<QWidget> parent = nullptr;
     int var_count = 0;
     QPointer<QScrollArea> object = nullptr;
+    QPointer<QComboBox> target_box= nullptr;
     std::vector<CoeffBox*> coeffs = {};
 
     void create_interface();
@@ -60,6 +63,7 @@ public:
         create_interface();
     }
     int get_coeff(int var_number) {return coeffs[var_number]->get_coeff();}
+    std::string get_target() {return target_box->currentText().toStdString();}
     QScrollArea* get_object()
     {
         return object;
@@ -84,6 +88,9 @@ public:
         create_interface();}
     void resize(int w, int h)
     {object->resize(w, h);}
+    int get_right_part() {return right_part_window->text().toInt();}
+    std::string get_sign_str() {return sign_box->currentText().toStdString();}
+    CoeffBox* get_coeff_box(int i) {return coeffs[i];}
     QScrollArea* get_object() {return object;};
 
 };
@@ -110,6 +117,10 @@ public:
     }
     void resize(int w, int h);
     QWidget* get_object() {return object;};
+    EqSystem* get_eq(int j) {return eqs[j];}
+    int get_system_c(int row, int col);
+    std::string get_eq_sign(int i) {return eqs[i]->get_sign_str();}
+    int get_eq_right_part(int i) {return eqs[i]->get_right_part();}
 };
 
 
@@ -120,14 +131,16 @@ class TaskView : public QWidget
 
 public:
     explicit TaskView(QWidget *parent = nullptr);
-    TaskView(int var_count, int eqs_count, QWidget *parent = nullptr) :
+    TaskView(int var_count, int eqs_count, int w, int h, QWidget *parent = nullptr) :
         TaskView(parent)
     {
         this->var_count = var_count;
         this->eqs_count = eqs_count;
+        this->resize(w, h);
         create_interface();
     };
-    void resize_all();
+    SystemView* get_system_view() {return &system_view;}
+    TargetFunctionView* get_target_view() {return &target_view;}
 //    QPointer<QWidget> get_target_interface_element();
 //    QPointer<QWidget> get_system_inderface_element();
     ~TaskView();
@@ -138,11 +151,7 @@ private:
     Ui::TaskView *ui;
     int var_count = 0;
     int eqs_count = 0;
-    int target_view_height = 60;
     int layout_space = 50;
-    int system_eqheight = 60;
-    int system_eqwidth = 0;
-    int target_view_width = 0;
 
     void create_interface();
 };

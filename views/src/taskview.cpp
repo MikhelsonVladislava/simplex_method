@@ -19,12 +19,6 @@ TaskView::TaskView(QWidget *parent) :
     ui->setupUi(this);
 }
 
-void TaskView::resize_all()
-{
-    int common_height = target_view_height + layout_space + eqs_count * 100;
-    this->resize(this->parentWidget()->width() - 60, common_height);
-}
-
 void TaskView::create_interface()
 {
     QPointer<QVBoxLayout> layout = new QVBoxLayout(this);
@@ -38,7 +32,6 @@ void TaskView::create_interface()
     layout->addWidget(system_view.get_object());
     layout->setStretchFactor(target_view.get_object(), 1);
     layout->setStretchFactor(system_view.get_object(), eqs_count);
-    resize_all();
 }
 
 TaskView::~TaskView()
@@ -53,6 +46,7 @@ void CoeffBox::create_interface()
 
     QPointer<QHBoxLayout> coeff_var_widget = new QHBoxLayout(splitter);
     QPointer<QLineEdit> coeff_window = new QLineEdit;
+    this->coeff_window = coeff_window;
     coeff_window->setAccessibleName(name);
     coeff_var_widget->addWidget(coeff_window);
     coeff_window->setValidator( validator );
@@ -91,10 +85,10 @@ void TargetFunctionView::create_interface()
     arrow->setText(target_label_text );
 
 
-    QPointer<QComboBox> target_combo_box = new QComboBox;
+    target_box = new QComboBox;
     QStringList box_variants = (QStringList() << "max" << "min");
-    target_combo_box->addItems(box_variants);
-    layout ->addWidget(target_combo_box);
+    target_box->addItems(box_variants);
+    layout ->addWidget(target_box);
     object->setWidget(target);
 }
 
@@ -117,6 +111,11 @@ void SystemView::resize(int w, int h)
     {
         eqs[k]->resize(w, h);
     }
+}
+
+int SystemView::get_system_c(int row, int col)
+{
+    return get_eq(row)->get_coeff_box(col)->get_coeff();
 }
 
 void EqSystem::create_interface()

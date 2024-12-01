@@ -14,6 +14,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
 	./views/src/main.cpp
+        ./views/src/solutionview.cpp
+        ./views/headers/solutionview.h
+        ui_solutionview.h
+        solutionview.ui
         ./views/src/createtask.cpp
         ./views/headers/createtask.h
         ui_createtask.h
