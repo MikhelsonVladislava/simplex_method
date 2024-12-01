@@ -47,6 +47,8 @@ private:
     Table<Fraction> table;
     void create_interface();
     int space_size = 15;
+    int window_height = 700;
+    int window_width = 1290;
 };
 
 #endif // SOLUTIONVIEW_H

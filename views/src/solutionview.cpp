@@ -20,19 +20,22 @@ SolutionView::~SolutionView()
 
 void SolutionView::create_interface()
 {
-    this->resize(1290, 700);
+    this->resize(window_width, window_height);
+    QPointer<QVBoxLayout> main_layout = new QVBoxLayout(this);
+
     table.optimize();
     std::vector<std::shared_ptr<TableState<Fraction>>> hist = table.get_history();
-    int iterations = hist.size();
-    QPointer<QScrollArea> area = new QScrollArea(this);
+    int iterations_count = hist.size();
+
+    QPointer<QScrollArea> sol_history_scroll_area = new QScrollArea(this);
     QPointer<QWidget> container = new QWidget;
-    area->setWidget(container);
+    sol_history_scroll_area->setWidget(container);
     QPointer<QVBoxLayout> layout = new QVBoxLayout(container);
-    QPointer<QVBoxLayout> main_layout = new QVBoxLayout(this);
-    main_layout->addWidget(area);
+    main_layout->addWidget(sol_history_scroll_area);
     layout->setSpacing(space_size);
+
     int max_state_height = 0;
-    for (int j = 0; j < iterations; j++)
+    for (int j = 0; j < iterations_count; j++)
     {
         QPointer<TableViewTemplate> table_state = new TableViewTemplate(hist[j]);
         layout->addWidget(table_state);
@@ -41,34 +44,35 @@ void SolutionView::create_interface()
         table_state->setStyleSheet("QWidget { background-color : black; } QLabel { font-size: 40px; background-color : white; color : black; } ");
 
     }
-    QPointer<QWidget> result = new QWidget;
-    QPointer<QHBoxLayout> layout_r = new QHBoxLayout(result);
-    result->setStyleSheet("QLabel { font-size: 40px; background-color : white; color : black; } ");
+    QPointer<QWidget> result_window = new QWidget;
+    QPointer<QHBoxLayout> layout_result_window = new QHBoxLayout(result_window);
+    result_window->setStyleSheet("QLabel { font-size: 40px; background-color : white; color : black; } ");
 
-    QPointer<QLabel> op_plan = new QLabel;
-    QString lb = "(";
+    QPointer<QLabel> opt_plan_label = new QLabel;
+    QString opt_plan_txt = "(";
     std::vector<Fraction> op_vector = table.optimum();
     int n = op_vector.size();
     for (int k = 0; k < n; k++)
     {
-        lb = lb + QString::fromStdString(op_vector[k].to_string());
-        if (k < n - 1) lb += QString(", ");
+        opt_plan_txt = opt_plan_txt + QString::fromStdString(op_vector[k].to_string());
+        if (k < n - 1) opt_plan_txt += QString(", ");
     }
-    lb = lb + QString(")");
-    op_plan->setText(lb);
-    layout_r->addWidget(op_plan);
+    opt_plan_txt = opt_plan_txt + QString(")");
+    opt_plan_label->setText(opt_plan_txt);
+    layout_result_window->addWidget(opt_plan_label);
 
     QPointer<QLabel> f_value = new QLabel;
-    lb = "F = " + QString::fromStdString(table.get_tagret_value().to_string());
-    f_value->setText(lb);
-    layout_r->addWidget(f_value);
-    layout_r->setSpacing(space_size);
-    layout_r->setAlignment(Qt::AlignCenter);
+    opt_plan_txt = "F = " + QString::fromStdString(table.get_tagret_value().to_string());
+    f_value->setText(opt_plan_txt);
+    layout_result_window->addWidget(f_value);
+    layout_result_window->setSpacing(space_size);
+
+    layout_result_window->setAlignment(Qt::AlignCenter);
 
     main_layout->setAlignment(Qt::AlignCenter);
-    main_layout->addWidget(result);
-    int h = iterations * (max_state_height + space_size);
-    area->resize(this->width(), this->height() / 1.5);
+    main_layout->addWidget(result_window);
+    sol_history_scroll_area->resize(this->width(), this->height() / 1.5);
+    int h = iterations_count * (max_state_height + space_size);
     int w = this->width();
     container->resize(w,h);
 }
