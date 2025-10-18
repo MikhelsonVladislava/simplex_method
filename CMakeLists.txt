@@ -14,22 +14,18 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
 	./views/src/main.cpp
-        ./views/src/solutionview.cpp
-        ./views/headers/solutionview.h
-        ui_solutionview.h
-        solutionview.ui
-        ./views/src/createtask.cpp
-        ./views/headers/createtask.h
-        ui_createtask.h
-        createtask.ui
-        ./views/src/mainwindow.cpp
-        ./views/headers/mainwindow.h
-	ui_mainwindow.h
-        mainwindow.ui
-        ./views/src/taskview.cpp
-        ./views/headers/taskview.h
-        ui_taskview.h
-        taskview.ui
+    ./views/src/solutionview.cpp
+    ./views/headers/solutionview.h
+    solutionview.ui
+    ./views/src/createtask.cpp
+    ./views/headers/createtask.h
+    createtask.ui
+    ./views/src/mainwindow.cpp
+    ./views/headers/mainwindow.h
+    mainwindow.ui
+    ./views/src/taskview.cpp
+    ./views/headers/taskview.h
+    taskview.ui
 	./simplex_logic/headers/task.h
 	./simplex_logic/headers/table.h
 	./simplex_logic/headers/units.h

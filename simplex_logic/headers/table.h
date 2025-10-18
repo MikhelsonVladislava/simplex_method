@@ -147,8 +147,8 @@ public:
         int main_row = 0;
         for (int i = 1; i < system_elements_count; i++)
         {
-            if ((main_row_coeff < 0 && choose_main_row_vector[i] >= 0) ||
-                    (choose_main_row_vector[i] >= 0 && choose_main_row_vector[i] < main_row_coeff))
+            if ((main_row_coeff <= 0 && choose_main_row_vector[i] > 0) ||
+                    (choose_main_row_vector[i] > 0 && choose_main_row_vector[i] < main_row_coeff))
             {
                 main_row_coeff = choose_main_row_vector[i];
                 main_row = i;
