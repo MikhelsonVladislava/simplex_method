@@ -36,7 +36,7 @@ private:
             int basic_var_eq_no_zero = -1;
             bool coeff_is_one = false;
             for (int j = 0; j < system_elements_count; j++)
-                if (main_table_coeffs[j][i] == 1 && !coeff_is_one) 
+                if ((main_table_coeffs[j][i] == 1 || main_table_coeffs[j][i] == -1) && !coeff_is_one)
                 {
                     basic_var_eq_no_zero = j;
                     coeff_is_one = true;
@@ -141,14 +141,15 @@ public:
         std::vector<maintype> choose_main_row_vector = {};
         int main_column = choose_main_col();
         for (int k = 0; k < system_elements_count; k++)
-            choose_main_row_vector.push_back(right_part_b[k] / main_table_coeffs[k][main_column]);
+            if (main_table_coeffs[k][main_column] == 0) choose_main_row_vector.push_back(-1);
+            else choose_main_row_vector.push_back(right_part_b[k] / main_table_coeffs[k][main_column]);
         
         maintype main_row_coeff = choose_main_row_vector[0];
         int main_row = 0;
         for (int i = 1; i < system_elements_count; i++)
         {
-            if ((main_row_coeff <= 0 && choose_main_row_vector[i] > 0) ||
-                    (choose_main_row_vector[i] > 0 && choose_main_row_vector[i] < main_row_coeff))
+            if ((main_row_coeff < 0 && choose_main_row_vector[i] >= 0) ||
+                    (choose_main_row_vector[i] >= 0 && choose_main_row_vector[i] < main_row_coeff))
             {
                 main_row_coeff = choose_main_row_vector[i];
                 main_row = i;
