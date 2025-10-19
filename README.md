@@ -26,7 +26,7 @@ This application solves linear programming problems presented in the form of ine
 
 ```bash
 # Clone the repository
-git clone https://github.com/Vortex0034/simplex_method.git
+git clone https://github.com/MikhelsonVladislava/simplex_method.git
 cd simplex_method
 
 # Create build directory
